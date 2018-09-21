@@ -6,7 +6,7 @@
 /*   By: bhamidi <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/18 15:30:22 by bhamidi           #+#    #+#             */
-/*   Updated: 2018/09/18 17:17:32 by bhamidi          ###   ########.fr       */
+/*   Updated: 2018/09/21 17:07:09 by bhamidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,5 +19,6 @@
 # include <fcntl.h>
 # include <unistd.h>
 # include <netdb.h>
+# include <netinet/in.h>
 
 #endif
