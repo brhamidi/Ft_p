@@ -6,7 +6,7 @@
 /*   By: bhamidi <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/18 15:29:01 by bhamidi           #+#    #+#             */
-/*   Updated: 2018/09/21 19:32:22 by bhamidi          ###   ########.fr       */
+/*   Updated: 2018/09/24 16:38:29 by bhamidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,15 +51,48 @@ int		create_server(int port)
 	return (sock);
 }
 
+int		repl(int sock)
+{
+	int					r;
+	char				buf[1024];
+
+	while ((r = read(sock, buf, 1023)) > 0)
+	{
+		buf[r] = '\0';
+		printf("reveived %d bytes: %s\n", r, buf);
+	}
+	close(sock);
+	return (0);
+}
+
+int		handle_clients(int sock)
+{
+	int					cs;
+	unsigned int		cslen;
+	struct sockaddr_in	csin;
+	pid_t				pid;
+
+	if ((cs = accept(sock, (struct sockaddr*)&csin, &cslen)) == -1)
+	{
+		printf("accept() failed\n");
+		exit(EXIT_FAILURE);
+	}
+	pid = fork();
+	if (pid == -1)
+	{
+		printf("fork() failed\n");
+		return (-1);
+	}
+	if (pid == 0)
+		return (repl(cs));
+	else
+		return (handle_clients(sock));
+}
+
 int		main(int ac, char **av)
 {
 	int			port;
 	int			sock;
-	int			cs;
-	unsigned int		cslen;
-	struct sockaddr_in	csin;
-	int			r;
-	char			buf[1024];
 
 	if (ac != 2)
 		usage(av[0]);
@@ -70,17 +103,8 @@ int		main(int ac, char **av)
 		printf("create_server() failed\n");
 		exit(EXIT_FAILURE);
 	}
-	if ((cs = accept(sock, (struct sockaddr*)&csin, &cslen)) == -1)
-	{
-		printf("accept() failed\n");
-		exit(EXIT_FAILURE);
-	}
-	while ((r = read(cs, buf, 1023)) > 0)
-	{
-		buf[r] = '\0';
-		printf("reveived %d bytes: %s\n", r, buf);
-	}
-	close(cs);
+	if (handle_clients(sock) == -1)
+		printf("handle_clients() failed.\n");
 	close(sock);
 	return (0);
 }
