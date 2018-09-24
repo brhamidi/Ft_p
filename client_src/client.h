@@ -6,7 +6,7 @@
 /*   By: bhamidi <bhamidi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/21 19:25:24 by bhamidi           #+#    #+#             */
-/*   Updated: 2018/09/21 23:05:02 by bhamidi          ###   ########.fr       */
+/*   Updated: 2018/09/24 19:02:22 by bhamidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,5 +21,8 @@
 # include <netdb.h>
 # include <netinet/in.h>
 # include <arpa/inet.h>
+# include "libft.h"
+
+char	**ft_splitwhitespaces(char *str);
 
 #endif

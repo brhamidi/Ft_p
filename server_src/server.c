@@ -6,7 +6,7 @@
 /*   By: bhamidi <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/18 15:29:01 by bhamidi           #+#    #+#             */
-/*   Updated: 2018/09/24 16:38:29 by bhamidi          ###   ########.fr       */
+/*   Updated: 2018/09/24 19:03:51 by bhamidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ int		handle_clients(int sock)
 	if ((cs = accept(sock, (struct sockaddr*)&csin, &cslen)) == -1)
 	{
 		printf("accept() failed\n");
-		exit(EXIT_FAILURE);
+		return (-1);
 	}
 	pid = fork();
 	if (pid == -1)
