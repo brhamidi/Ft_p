@@ -6,7 +6,7 @@
 /*   By: bhamidi <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/18 15:30:22 by bhamidi           #+#    #+#             */
-/*   Updated: 2018/09/21 17:07:09 by bhamidi          ###   ########.fr       */
+/*   Updated: 2018/09/26 19:15:03 by bhamidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,5 +20,14 @@
 # include <unistd.h>
 # include <netdb.h>
 # include <netinet/in.h>
+# include "libft.h"
+# include <sys/stat.h>
+# include <errno.h>
+
+typedef struct	s_data
+{
+	char	*root;
+	char	*pwd;
+}				t_data;;
 
 #endif

@@ -35,16 +35,16 @@ LIBPATH	= ./libft
 all: $(LIBNAME) $(SERVER) $(CLIENT)
 
 $(SERVER): $(SERVER_OBJS) $(SERVER_PATH)$(SERVER_HEADER) Makefile
-	$(CC) $(CFLAGS) $(SERVER_OBJS) -o $@
+	$(CC) $(CFLAGS) $(SERVER_OBJS) -o $@ -L$(LIBPATH) -lft
 
 $(CLIENT): $(CLIENT_OBJS) $(CLIENT_PATH)$(CLIENT_HEADER) Makefile
 	$(CC) $(CFLAGS) $(CLIENT_OBJS) -o $@ -L$(LIBPATH) -lft
 
 $(LIBNAME):
-	make -C $(LIBPATH)
+	@make -C $(LIBPATH)
 
 $(SERVER_PATH)%.o: $(SERVER_PATH)%.c
-	$(CC) -c $(CFLAGS) -o $@ $<
+	$(CC) -c $(CFLAGS) -o $@ $< -I$(LIBPATH)
 
 $(CLIENT_PATH)%.o: $(CLIENT_PATH)%.c
 	$(CC) -c $(CFLAGS) -o $@ $< -I$(LIBPATH)
