@@ -6,7 +6,7 @@
 /*   By: bhamidi <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/18 15:29:01 by bhamidi           #+#    #+#             */
-/*   Updated: 2018/09/26 19:51:54 by bhamidi          ###   ########.fr       */
+/*   Updated: 2018/09/27 13:31:27 by bhamidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,10 @@ void	usage(char *path)
 
 int		create_server(int port)
 {
-	int			sock;
+	int					sock;
 	struct protoent		*proto;
 	struct sockaddr_in	sin;
-	
+
 	proto = getprotobyname("tcp");
 	if (!proto)
 	{
@@ -49,21 +49,6 @@ int		create_server(int port)
 		return (-1);
 	}
 	return (sock);
-}
-
-int		repl(int sock, t_data *e)
-{
-	int					r;
-	char				buf[1024];
-
-	(void)e;
-	while ((r = read(sock, buf, 1023)) > 0)
-	{
-		buf[r] = '\0';
-		printf("reveived %d bytes: %s\n", r, buf);
-	}
-	close(sock);
-	return (0);
 }
 
 void	init_e(t_data *e, char **env, char *userDir)
@@ -93,6 +78,21 @@ void	clean_e(t_data *e)
 {
 	free(e->root);
 	free(e->pwd);
+}
+
+int		repl(int sock, t_data *e)
+{
+	int					r;
+	char				buf[1024];
+
+	(void)e;
+	while ((r = read(sock, buf, 1023)) > 0)
+	{
+		buf[r] = '\0';
+		printf("reveived %d bytes: %s\n", r, buf);
+	}
+	close(sock);
+	return (0);
 }
 
 int		init(int cs, char **env)

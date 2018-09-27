@@ -6,7 +6,7 @@
 /*   By: bhamidi <bhamidi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/21 19:22:53 by bhamidi           #+#    #+#             */
-/*   Updated: 2018/09/26 18:53:40 by bhamidi          ###   ########.fr       */
+/*   Updated: 2018/09/27 15:07:11 by bhamidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,36 +18,88 @@ void	usage(char *path)
 	exit(EXIT_FAILURE);
 }
 
-void	ft_putstr(const char *str)
+size_t	array_len(char **tab)
 {
-	if (*str)
-	{
-		write(1, str, 1);
-		ft_putstr(str + 1);
-	}
+	size_t	n;
+
+	n = 0;
+	while (tab[n])
+		n++;
+	return (n);
 }
 
-int		ft_strcmp(const char *s1, const char *s2)
+void	array_free(char **tab)
 {
-	if (!*s1 || !*s2)
-		return (*s1 - *s2);
-	if (*s1 == *s2)
-		return (ft_strcmp(s1 + 1, s2 + 1));
-	return (*s1 - *s2);
+	size_t	n;
+
+	n = 0;
+	while (tab[n])
+	{
+		free(tab[n]);
+		n++;
+	}
+	free(tab);
+}
+
+const char *g_error[3] = {
+	"command not found",
+	"too much argument",
+	"argument not found"
+};
+
+const char *g_cmd_tab[9] = {
+	"pwd", "lpwd", "ls", "lls", "cd", "lcd", "get", "put", "quit"
+};
+
+int		cmdNotExist(char *str)
+{
+	int		i;
+
+	i = -1;
+	while (++i < 9)
+		if (!ft_strcmp(g_cmd_tab[i], str))
+			return (0);
+	return (1);
+}
+
+int		allowCmd(char **array)
+{
+	if (!array || !*array)
+		return (-1);
+	if (cmdNotExist(*array))
+		return (1);
+	if (!ft_strcmp(*array, "pwd") || !ft_strcmp(*array, "quit") ||
+			!ft_strcmp(*array, "lpwd"))
+		if (array_len(array) > 1)
+			return (2);
+	if (!ft_strcmp(*array, "get") || !ft_strcmp(*array, "put"))
+	{
+		if (array_len(array) > 2)
+			return (2);
+		if (array_len(array) < 2)
+			return (3);
+	}
+	return (0);
 }
 
 int		repl(int sock)
 {
-	char	buf[256];
+	char	buf[1024];
 	int		r;
+	char	**array;
 
 	ft_putstr("ftp>");
-	if ((r = read(0, buf, 255)) > 0)
+	if ((r = read(0, buf, 1023)) > 0)
 	{
 		buf[r] = '\0';
-		if (!ft_strcmp("quit\n", buf))
-			return (0);
-		write(sock, buf, r);
+		if ((array = ft_splitwhitespaces(buf)) != NULL)
+		{
+			if ((r = allowCmd(array)))
+				printf("ERROR: %s\n", g_error[r - 1]);
+			else if (!ft_strcmp("quit", array[0]))
+				return (0);
+			array_free(array);
+		}
 		return (repl(sock));
 	}
 	return (0);

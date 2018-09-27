@@ -6,7 +6,7 @@
 /*   By: bhamidi <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/20 16:51:31 by bhamidi           #+#    #+#             */
-/*   Updated: 2018/09/24 19:01:50 by bhamidi          ###   ########.fr       */
+/*   Updated: 2018/09/27 13:48:28 by bhamidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,8 @@ char	**ft_splitwhitespaces(char *str)
 
 	i = 0;
 	j = 0;
-	if ((res = malloc(sizeof(char*) * (ft_nb_words(str) + 1))) == NULL)
+	if (ft_nb_words(str) <= 0 ||
+			(res = malloc(sizeof(char*) * (ft_nb_words(str) + 1))) == NULL)
 		return (NULL);
 	while (str[i])
 	{
