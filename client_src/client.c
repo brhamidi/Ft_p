@@ -6,7 +6,7 @@
 /*   By: bhamidi <bhamidi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/21 19:22:53 by bhamidi           #+#    #+#             */
-/*   Updated: 2018/09/27 15:07:11 by bhamidi          ###   ########.fr       */
+/*   Updated: 2018/09/27 15:32:41 by bhamidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,13 +41,13 @@ void	array_free(char **tab)
 	free(tab);
 }
 
-const char *g_error[3] = {
+const char	*g_error[3] = {
 	"command not found",
 	"too much argument",
 	"argument not found"
 };
 
-const char *g_cmd_tab[9] = {
+const char	*g_cmd_tab[9] = {
 	"pwd", "lpwd", "ls", "lls", "cd", "lcd", "get", "put", "quit"
 };
 
@@ -82,6 +82,35 @@ int		allowCmd(char **array)
 	return (0);
 }
 
+void	client_pwd(char **args, int sock)
+{
+	(void)args;
+	(void)sock;
+	ft_putendl_fd("client pwd", 1);
+}
+
+void	srv_pwd(char **args, int sock)
+{
+	(void)args;
+	ft_putendl_fd("srv_pwd function", sock);
+}
+
+
+void		(*g_cmd_func[8])(char **, int) = {
+	srv_pwd,
+	client_pwd
+};
+
+void	handle_cmd(char *cmd, char **argvs, int sock)
+{
+	int		i;
+
+	i = -1;
+	while (++i < 8)
+		if (!ft_strcmp(cmd, g_cmd_tab[i]))
+			g_cmd_func[i](argvs, sock);
+}
+
 int		repl(int sock)
 {
 	char	buf[1024];
@@ -98,6 +127,8 @@ int		repl(int sock)
 				printf("ERROR: %s\n", g_error[r - 1]);
 			else if (!ft_strcmp("quit", array[0]))
 				return (0);
+			else
+				handle_cmd(*array, array + 1, sock);
 			array_free(array);
 		}
 		return (repl(sock));
