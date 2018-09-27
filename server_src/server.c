@@ -6,7 +6,7 @@
 /*   By: bhamidi <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/18 15:29:01 by bhamidi           #+#    #+#             */
-/*   Updated: 2018/09/27 17:58:40 by bhamidi          ###   ########.fr       */
+/*   Updated: 2018/09/27 19:41:03 by bhamidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ void	init_e(t_data *e, char **env, char *userDir)
 	size_t len;
 
 	i = 0;
+	e->depth = 0;
 	e->pwd = ft_strdup("/");
 	while (env[i] != NULL)
 	{
@@ -69,6 +70,7 @@ void	init_e(t_data *e, char **env, char *userDir)
 			ft_strcat(e->root, userDir);
 			printf("root: %s\n", e->root);
 			printf("pwd: %s\n", e->pwd);
+			printf("depth: %d\n", e->depth);
 		}
 		i++;
 	}
@@ -94,14 +96,58 @@ void	clean_e(t_data *e)
 	free(e->pwd);
 }
 
+int		verifDir(int depth, char *path)
+{
+	char	*tmp;
+
+	if (depth < 0)
+		return (1);
+	if (path == NULL)
+		return (0);
+	tmp = ft_strchr(path, '/');
+	if (!ft_strncmp(path, "../", 3) || !ft_strncmp(path, "..\0", 3))
+		return (verifDir(depth - 1, tmp + 1));
+	else
+	{
+		if (tmp == NULL)
+			return (depth + 1);
+		return (verifDir(depth + 1, tmp + 1));
+	}
+}
+
+void	tr_ls_args(int sock, t_data *e, int acc)
+{
+	char	buf[1024];
+	int		r;
+
+	if (acc > 0)
+	{
+		if ((r = read(sock, buf, 1023)) > 0)
+		{
+			buf[r] = '\0';
+			if (buf[r - 1] == '/')
+				buf[r - 1] = '\0';
+			if (verifDir(e->depth, buf))
+				ft_putendl("Error: path not authorized");
+			else
+				ft_putendl("Sucess: Path Allowed");
+		}
+		tr_ls_args(sock, e, acc - 1);
+	}
+}
+
 void	srv_ls(int sock, t_data *e)
 {
 	char	buf[1024];
-//	int		r;
+	int		r;
 
-	(void)e;
-	read(sock, buf, 1023);
-	ft_putnbr((int)buf[0]);
+		(void)e;
+	if ((r = read(sock, buf, 1023)) > 0)
+	{
+		buf[r] = '\0';
+		printf("receive nb args: %d\n", ft_atoi(buf));
+		//tr_ls_args(sock, e, nargs);
+	}
 }
 
 void	srv_pwd(int sock, t_data *e)

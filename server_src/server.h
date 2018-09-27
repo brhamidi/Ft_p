@@ -6,7 +6,7 @@
 /*   By: bhamidi <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/18 15:30:22 by bhamidi           #+#    #+#             */
-/*   Updated: 2018/09/26 19:15:03 by bhamidi          ###   ########.fr       */
+/*   Updated: 2018/09/27 18:41:16 by bhamidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ typedef struct	s_data
 {
 	char	*root;
 	char	*pwd;
+	int		depth;
 }				t_data;;
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: bhamidi <bhamidi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/21 19:22:53 by bhamidi           #+#    #+#             */
-/*   Updated: 2018/09/27 17:00:04 by bhamidi          ###   ########.fr       */
+/*   Updated: 2018/09/27 19:36:33 by bhamidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,11 +116,12 @@ void	srv_pwd(char **args, int sock)
 
 void	srv_ls(char **args, int sock)
 {
-	int		len;
+	const int	len = array_len(args);
+	const char	*slen = ft_itoa(len);
 
-	len = array_len(args);
 	write(sock, "ls", 2);
-	write(sock, &len, sizeof(int));
+	write(sock, slen, ft_strlen(slen));
+	free((void *)slen);
 }
 
 void		(*g_cmd_func[8])(char **, int) = {
