@@ -6,7 +6,7 @@
 /*   By: bhamidi <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/18 15:29:01 by bhamidi           #+#    #+#             */
-/*   Updated: 2018/09/27 15:17:14 by bhamidi          ###   ########.fr       */
+/*   Updated: 2018/09/27 17:58:40 by bhamidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,10 +74,61 @@ void	init_e(t_data *e, char **env, char *userDir)
 	}
 }
 
+char	*ft_strjoin(const char *s1, const char *s2)
+{
+	char			*str;
+	const size_t	len = ft_strlen(s1) + ft_strlen(s2);
+
+	if (!s1 || !s2)
+		return (NULL);
+	if ((str = ft_strnew(len + 1)) == NULL)
+		return (NULL);
+	ft_strcpy(str, s1);
+	ft_strcat(str, s2);
+	return (str);
+}
+
 void	clean_e(t_data *e)
 {
 	free(e->root);
 	free(e->pwd);
+}
+
+void	srv_ls(int sock, t_data *e)
+{
+	char	buf[1024];
+//	int		r;
+
+	(void)e;
+	read(sock, buf, 1023);
+	ft_putnbr((int)buf[0]);
+}
+
+void	srv_pwd(int sock, t_data *e)
+{
+	char *str = ft_strjoin("SUCESS: ", e->pwd);
+
+	write(sock, str, ft_strlen(str));
+	free(str);
+}
+
+const char	*g_cmd_tab[5] = {
+	"pwd", "ls", "cd", "get", "put"
+};
+
+void		(*g_cmd_func[5])(int, t_data *) = {
+	srv_pwd,
+	srv_ls
+};
+
+void	handle_cmd(char *cmd, int sock, t_data *e)
+{
+	int		i;
+
+	i = -1;
+	while (++i < 5)
+		if (!ft_strcmp(cmd, g_cmd_tab[i]))
+			g_cmd_func[i](sock, e);
 }
 
 int		repl(int sock, t_data *e)
@@ -89,7 +140,7 @@ int		repl(int sock, t_data *e)
 	while ((r = read(sock, buf, 1023)) > 0)
 	{
 		buf[r] = '\0';
-		printf("reveived %d bytes: %s\n", r, buf);
+		handle_cmd(buf, sock, e);
 	}
 	close(sock);
 	return (0);

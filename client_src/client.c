@@ -6,7 +6,7 @@
 /*   By: bhamidi <bhamidi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/21 19:22:53 by bhamidi           #+#    #+#             */
-/*   Updated: 2018/09/27 15:32:41 by bhamidi          ###   ########.fr       */
+/*   Updated: 2018/09/27 17:00:04 by bhamidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ const char	*g_error[3] = {
 };
 
 const char	*g_cmd_tab[9] = {
-	"pwd", "lpwd", "ls", "lls", "cd", "lcd", "get", "put", "quit"
+	"pwd", "lpwd", "ls", "lls", "cd", "get", "put", "quit"
 };
 
 int		cmdNotExist(char *str)
@@ -56,7 +56,7 @@ int		cmdNotExist(char *str)
 	int		i;
 
 	i = -1;
-	while (++i < 9)
+	while (++i < 8)
 		if (!ft_strcmp(g_cmd_tab[i], str))
 			return (0);
 	return (1);
@@ -82,23 +82,51 @@ int		allowCmd(char **array)
 	return (0);
 }
 
+extern char **environ;
+
 void	client_pwd(char **args, int sock)
 {
 	(void)args;
 	(void)sock;
-	ft_putendl_fd("client pwd", 1);
+	int  i;
+
+	i = -1;
+	while (environ[++i])
+		if (!ft_strncmp(environ[i], "PWD=", 4))
+		{
+			printf("SUCESS: %s\n", environ[i] + 4);
+			return;
+		}
+	ft_putendl_fd("ERROR: $PWD not set", 2);
 }
 
 void	srv_pwd(char **args, int sock)
 {
+	int		r;
+	char	buf[1024];
+
 	(void)args;
-	ft_putendl_fd("srv_pwd function", sock);
+	write(sock, "pwd", 3);
+	if ((r = read(sock, buf, 1023)) > 0)
+	{
+		buf[r] = '\0';
+		ft_putendl(buf);
+	}
 }
 
+void	srv_ls(char **args, int sock)
+{
+	int		len;
+
+	len = array_len(args);
+	write(sock, "ls", 2);
+	write(sock, &len, sizeof(int));
+}
 
 void		(*g_cmd_func[8])(char **, int) = {
 	srv_pwd,
-	client_pwd
+	client_pwd,
+	srv_ls
 };
 
 void	handle_cmd(char *cmd, char **argvs, int sock)
@@ -106,7 +134,7 @@ void	handle_cmd(char *cmd, char **argvs, int sock)
 	int		i;
 
 	i = -1;
-	while (++i < 8)
+	while (++i < 7)
 		if (!ft_strcmp(cmd, g_cmd_tab[i]))
 			g_cmd_func[i](argvs, sock);
 }
