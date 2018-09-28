@@ -6,7 +6,7 @@
 /*   By: bhamidi <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/18 15:29:01 by bhamidi           #+#    #+#             */
-/*   Updated: 2018/09/27 19:41:03 by bhamidi          ###   ########.fr       */
+/*   Updated: 2018/09/28 20:02:25 by bhamidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,21 +98,9 @@ void	clean_e(t_data *e)
 
 int		verifDir(int depth, char *path)
 {
-	char	*tmp;
-
-	if (depth < 0)
-		return (1);
-	if (path == NULL)
-		return (0);
-	tmp = ft_strchr(path, '/');
-	if (!ft_strncmp(path, "../", 3) || !ft_strncmp(path, "..\0", 3))
-		return (verifDir(depth - 1, tmp + 1));
-	else
-	{
-		if (tmp == NULL)
-			return (depth + 1);
-		return (verifDir(depth + 1, tmp + 1));
-	}
+	(void)depth;
+	(void)path;
+	return (1);
 }
 
 void	tr_ls_args(int sock, t_data *e, int acc)
@@ -141,13 +129,16 @@ void	srv_ls(int sock, t_data *e)
 	char	buf[1024];
 	int		r;
 
-		(void)e;
+	(void)e;
+	write(sock, "ok", 2);
 	if ((r = read(sock, buf, 1023)) > 0)
 	{
 		buf[r] = '\0';
-		printf("receive nb args: %d\n", ft_atoi(buf));
+		printf("receive: %d\n", ft_atoi(buf));
 		//tr_ls_args(sock, e, nargs);
 	}
+	else
+		printf("read() failed with %d\n", r);
 }
 
 void	srv_pwd(int sock, t_data *e)
@@ -182,7 +173,6 @@ int		repl(int sock, t_data *e)
 	int					r;
 	char				buf[1024];
 
-	(void)e;
 	while ((r = read(sock, buf, 1023)) > 0)
 	{
 		buf[r] = '\0';

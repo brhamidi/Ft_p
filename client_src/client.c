@@ -6,7 +6,7 @@
 /*   By: bhamidi <bhamidi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/21 19:22:53 by bhamidi           #+#    #+#             */
-/*   Updated: 2018/09/27 19:36:33 by bhamidi          ###   ########.fr       */
+/*   Updated: 2018/09/28 20:00:43 by bhamidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,8 +118,10 @@ void	srv_ls(char **args, int sock)
 {
 	const int	len = array_len(args);
 	const char	*slen = ft_itoa(len);
+	char		buf[255];
 
 	write(sock, "ls", 2);
+	read(sock, buf, 2);
 	write(sock, slen, ft_strlen(slen));
 	free((void *)slen);
 }
