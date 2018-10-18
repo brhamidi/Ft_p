@@ -6,7 +6,7 @@
 /*   By: bhamidi <bhamidi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/21 19:22:53 by bhamidi           #+#    #+#             */
-/*   Updated: 2018/10/18 15:04:19 by bhamidi          ###   ########.fr       */
+/*   Updated: 2018/10/18 16:41:44 by bhamidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ int		allowCmd(char **array)
 	if (cmdNotExist(*array))
 		return (1);
 	if (!ft_strcmp(*array, "pwd") || !ft_strcmp(*array, "quit") ||
-			!ft_strcmp(*array, "lpwd"))
+			!ft_strcmp(*array, "lpwd") || !ft_strcmp(*array, "ls"))
 		if (array_len(array) > 1)
 			return (2);
 	if (!ft_strcmp(*array, "get") || !ft_strcmp(*array, "put"))
@@ -62,7 +62,8 @@ const char	*g_error[3] = {
 void		(*g_cmd_func[8])(char **, int) = {
 	srv_pwd,
 	client_pwd,
-	srv_ls
+	srv_ls,
+	client_ls
 };
 
 void	handle_cmd(char *cmd, char **argvs, int sock)

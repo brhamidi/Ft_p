@@ -6,55 +6,42 @@
 /*   By: bhamidi <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/18 12:28:36 by bhamidi           #+#    #+#             */
-/*   Updated: 2018/10/18 12:30:31 by bhamidi          ###   ########.fr       */
+/*   Updated: 2018/10/18 16:42:58 by bhamidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "server.h"
 
-int		verifDir(int depth, char *path)
+char	*join(char **result, char *name)
 {
-	(void)depth;
-	(void)path;
-	return (1);
-}
-
-void	tr_ls_args(int sock, t_data *e, int acc)
-{
-	char	buf[1024];
-	int		r;
-
-	if (acc > 0)
-	{
-		if ((r = read(sock, buf, 1023)) > 0)
-		{
-			buf[r] = '\0';
-			if (buf[r - 1] == '/')
-				buf[r - 1] = '\0';
-	//		if (verifDir(e->depth, buf))
-	//			ft_putendl("Error: path not authorized");
-	//		else
-	//			ft_putendl("Sucess: Path Allowed");
-			printf("handle %s\n", buf);
-		}
-		write(sock, "next folder", 11);
-		tr_ls_args(sock, e, acc - 1);
-	}
+	const int	len = ft_strlen(*result) + ft_strlen(name) + 1;
+	char		*res;
+	
+	res = ft_strnew(len + 1);
+	ft_strcpy(res, *result);
+	ft_strcat(res, " ");
+	ft_strcat(res, name);
+	free(*result);
+	return (res);
 }
 
 void	srv_ls(int sock, t_data *e)
 {
-	char	buf[1024];
-	int		r;
-	int		nargs;
+	DIR				*dirp;
+	struct dirent	*dp;
+	char			*result;
 
-	write(sock, "ok", 2);
-	if ((r = read(sock, buf, 1023)) > 0)
-	{
-		buf[r] = '\0';
-		nargs = ft_atoi(buf);
-		tr_ls_args(sock, e, nargs);
-	}
+	(void)e;
+	dirp = opendir(".");
+	result = ft_strdup("SUCCESS:");
+	if (dirp == NULL)
+		write(sock, "ERROR: cannot open current server directory", 37);
 	else
-		printf("read() failed with %d\n", r);
+	{
+		while ((dp = readdir(dirp)) != NULL)
+			result = join(&result, dp->d_name);
+		write(sock, result, ft_strlen(result));
+	}
+	free(result);
+	(void)closedir(dirp);
 }
