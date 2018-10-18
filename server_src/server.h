@@ -6,7 +6,7 @@
 /*   By: bhamidi <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/18 15:30:22 by bhamidi           #+#    #+#             */
-/*   Updated: 2018/10/18 16:02:25 by bhamidi          ###   ########.fr       */
+/*   Updated: 2018/10/18 17:49:38 by bhamidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ typedef struct	s_data
 
 int		init(int cs, char **env);
 void	srv_ls(int sock, t_data *e);
+void	srv_cd(int sock, t_data *e);
 void	srv_pwd(int sock, t_data *e);
 void	clean_e(t_data *e);
 void	init_e(t_data *e, char **env, char *userDir);

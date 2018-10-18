@@ -20,13 +20,13 @@ CFLAGS	+= -O2
 
 SERVER			= server
 SERVER_PATH		= server_src/
-SERVER_OBJ		= server.o server_fork.o srv_ls.o srv_pwd.o environement.o
+SERVER_OBJ		= server.o server_fork.o srv_ls.o srv_pwd.o environement.o srv_cd.o
 SERVER_OBJS		= $(addprefix $(SERVER_PATH), $(SERVER_OBJ))
 SERVER_HEADER	= server.h
 
 CLIENT			= client
 CLIENT_PATH		= client_src/
-CLIENT_OBJ		= client.o array.o cmd_pwd.o cmd_ls.o
+CLIENT_OBJ		= client.o array.o cmd_pwd.o cmd_ls.o cmd_cd.o
 CLIENT_OBJS		= $(addprefix $(CLIENT_PATH), $(CLIENT_OBJ))
 CLIENT_HEADER	= client.h
 

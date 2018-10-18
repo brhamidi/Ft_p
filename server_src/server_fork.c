@@ -6,7 +6,7 @@
 /*   By: bhamidi <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/18 12:21:49 by bhamidi           #+#    #+#             */
-/*   Updated: 2018/10/18 12:33:53 by bhamidi          ###   ########.fr       */
+/*   Updated: 2018/10/18 17:48:09 by bhamidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,8 @@ const char	*g_cmd_tab[5] = {
 
 void		(*g_cmd_func[5])(int, t_data *) = {
 	srv_pwd,
-	srv_ls
+	srv_ls,
+	srv_cd
 };
 
 void	handle_cmd(char *cmd, int sock, t_data *e)
