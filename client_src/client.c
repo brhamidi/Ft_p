@@ -6,7 +6,7 @@
 /*   By: bhamidi <bhamidi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/21 19:22:53 by bhamidi           #+#    #+#             */
-/*   Updated: 2018/09/28 20:00:43 by bhamidi          ###   ########.fr       */
+/*   Updated: 2018/10/18 15:04:19 by bhamidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,35 +17,6 @@ void	usage(char *path)
 	printf("Usage: %s <server> <port> [ directory ]\n", path);
 	exit(EXIT_FAILURE);
 }
-
-size_t	array_len(char **tab)
-{
-	size_t	n;
-
-	n = 0;
-	while (tab[n])
-		n++;
-	return (n);
-}
-
-void	array_free(char **tab)
-{
-	size_t	n;
-
-	n = 0;
-	while (tab[n])
-	{
-		free(tab[n]);
-		n++;
-	}
-	free(tab);
-}
-
-const char	*g_error[3] = {
-	"command not found",
-	"too much argument",
-	"argument not found"
-};
 
 const char	*g_cmd_tab[9] = {
 	"pwd", "lpwd", "ls", "lls", "cd", "get", "put", "quit"
@@ -82,56 +53,11 @@ int		allowCmd(char **array)
 	return (0);
 }
 
-extern char **environ;
-
-void	client_pwd(char **args, int sock)
-{
-	(void)args;
-	(void)sock;
-	int  i;
-
-	i = -1;
-	while (environ[++i])
-		if (!ft_strncmp(environ[i], "PWD=", 4))
-		{
-			printf("SUCESS: %s\n", environ[i] + 4);
-			return;
-		}
-	ft_putendl_fd("ERROR: $PWD not set", 2);
-}
-
-void	srv_pwd(char **args, int sock)
-{
-	int		r;
-	char	buf[1024];
-
-	(void)args;
-	write(sock, "pwd", 3);
-	if ((r = read(sock, buf, 1023)) > 0)
-	{
-		buf[r] = '\0';
-		ft_putendl(buf);
-	}
-}
-
-void	srv_ls(char **args, int sock)
-{
-	const int	len = array_len(args);
-	const char	*slen = ft_itoa(len);
-	char		buf[255];
-	int		i;
-
-	write(sock, "ls", 2);
-	read(sock, buf, 2);
-	write(sock, slen, ft_strlen(slen));
-	free((void *)slen);
-	i = -1;
-	while (++i < len)
-	{
-		write(sock, args[i], ft_strlen(args[i]));
-		read(sock, buf, 255);
-	}
-}
+const char	*g_error[3] = {
+	"command not found",
+	"too much argument",
+	"argument not found"
+};
 
 void		(*g_cmd_func[8])(char **, int) = {
 	srv_pwd,
@@ -202,14 +128,10 @@ int		create_client(char *server, char *port)
 	return (sock);
 }
 
-void	init(char *dir, int sock)
-{
-	write(sock, dir, ft_strlen(dir));
-}
-
 int		main(int ac, char **av)
 {
-	int	sock;
+	int		sock;
+	char	*dir;
 
 	if (ac < 3 || ac > 4)
 		usage(av[0]);
@@ -218,7 +140,8 @@ int		main(int ac, char **av)
 		printf("create_client() failed\n");
 		exit(EXIT_FAILURE);
 	}
-	init(ac == 3 ? "guest" : av[3], sock);
+	dir = ac == 3 ? "guest" : av[3];
+	write(sock, dir, ft_strlen(dir));
 	if (repl(sock))
 		printf("repl() failed.\n");
 	close(sock);

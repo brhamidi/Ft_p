@@ -6,7 +6,7 @@
 /*   By: bhamidi <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/04 11:18:26 by bhamidi           #+#    #+#             */
-/*   Updated: 2018/09/27 19:34:37 by bhamidi          ###   ########.fr       */
+/*   Updated: 2018/10/18 13:24:44 by bhamidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,5 +61,7 @@ void				ft_memdel(void **ap);
 char				*ft_strnew(size_t size);
 void				ft_strdel(char **as);
 char				*ft_itoa(int n);
+char				*ft_strjoin(const char *s1, const char *s2);
+char				**ft_splitwhitespaces(char *str);
 
 #endif
