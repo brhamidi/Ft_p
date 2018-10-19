@@ -6,13 +6,13 @@
 /*   By: bhamidi <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/18 17:50:32 by bhamidi           #+#    #+#             */
-/*   Updated: 2018/10/19 12:42:40 by bhamidi          ###   ########.fr       */
+/*   Updated: 2018/10/19 12:54:59 by bhamidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "client.h"
 
-void	srv_cd(__unused char **args, int sock)
+void	srv_cd(char **args, int sock)
 {
 	char		buf[255];
 	int			r;
