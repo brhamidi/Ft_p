@@ -6,7 +6,7 @@
 /*   By: bhamidi <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/18 12:32:50 by bhamidi           #+#    #+#             */
-/*   Updated: 2018/10/18 14:57:18 by bhamidi          ###   ########.fr       */
+/*   Updated: 2018/10/19 11:59:53 by bhamidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,9 +29,6 @@ void	init_e(t_data *e, char **env, char *userDir)
 			ft_strcpy(e->root, env[i] + 4);
 			ft_strcat(e->root, "/");
 			ft_strcat(e->root, userDir);
-			printf("root: %s\n", e->root);
-			printf("pwd: %s\n", e->pwd);
-			printf("depth: %d\n", e->depth);
 		}
 		i++;
 	}

@@ -6,7 +6,7 @@
 /*   By: bhamidi <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/18 13:35:48 by bhamidi           #+#    #+#             */
-/*   Updated: 2018/10/18 16:54:39 by bhamidi          ###   ########.fr       */
+/*   Updated: 2018/10/19 11:56:22 by bhamidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,14 +25,12 @@ char	*join(char **result, char *name)
 	return (res);
 }
 
-void	client_ls(char **args, int sock)
+void	client_ls(__unused char **args, __unused int sock)
 {
 	DIR				*dirp;
 	struct dirent	*dp;
 	char			*result;
 
-	(void)args;
-	(void)sock;
 	dirp = opendir(".");
 	if (dirp == NULL)
 	{

@@ -6,7 +6,7 @@
 /*   By: bhamidi <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/18 13:34:13 by bhamidi           #+#    #+#             */
-/*   Updated: 2018/10/18 13:35:37 by bhamidi          ###   ########.fr       */
+/*   Updated: 2018/10/19 11:56:59 by bhamidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,8 @@
 
 extern char **environ;
 
-void	client_pwd(char **args, int sock)
+void	client_pwd(__unused char **args, __unused int sock)
 {
-	(void)args;
-	(void)sock;
 	int  i;
 
 	i = -1;
@@ -30,12 +28,11 @@ void	client_pwd(char **args, int sock)
 	ft_putendl_fd("ERROR: $PWD not set", 2);
 }
 
-void	srv_pwd(char **args, int sock)
+void	srv_pwd(__unused char **args, int sock)
 {
 	int		r;
 	char	buf[1024];
 
-	(void)args;
 	write(sock, "pwd", 3);
 	if ((r = read(sock, buf, 1023)) > 0)
 	{
