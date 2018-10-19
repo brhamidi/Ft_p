@@ -6,7 +6,7 @@
 /*   By: bhamidi <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/18 17:48:15 by bhamidi           #+#    #+#             */
-/*   Updated: 2018/10/19 15:38:26 by bhamidi          ###   ########.fr       */
+/*   Updated: 2018/10/19 17:19:44 by bhamidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,20 +17,23 @@ int		get_depth(const char *path, int curr_depth, int acc)
 	char	*next;
 
 	if (path == NULL || ! *path)
-		return (acc);
+		return (acc + curr_depth < 0 ? -1 : acc + curr_depth);
 	if (*path == '/')
 		return get_depth(path + 1, curr_depth, acc);
 	next = ft_strchr(path, '/');
 	if (next == NULL)
 	{
-		if (!ft_strncmp(path, "../", 3) || !ft_strcmp(path, ".."))
-			return ((acc - 1 + curr_depth < 0) ? -1 : acc - 1);
-		return (acc + 1);
+		if (!ft_strcmp(path, ".."))
+			return ((acc - 1 + curr_depth < 0) ? -1 : acc - 1 + curr_depth);
+		else if (!ft_strcmp(path, "."))
+			return (acc + curr_depth);
+		return (acc + 1 + curr_depth);
 	}
 	if (!ft_strncmp(path, "../", 3))
 		return (acc - 1 + curr_depth < 0 ? -1 : get_depth(next + 1, curr_depth, acc - 1));
-	else
-		return (get_depth(next + 1, curr_depth, acc + 1));
+	else if (!ft_strncmp(path, "./", 2))
+		return (get_depth(next + 1, curr_depth, acc));
+	return (get_depth(next + 1, curr_depth, acc + 1));
 }
 
 void	handle_abolute_path(int sock, t_data *e, char *path)
@@ -73,7 +76,10 @@ void	handle_relatif_path(int sock, t_data *e, char *path)
 		{
 			e->depth = path_depth;
 			tmp = e->pwd;
-			e->pwd = ft_strjoin(e->pwd, path);
+			e->pwd = ft_strnew(ft_strlen(e->pwd) + ft_strlen(path) + 1 + 2);
+			ft_strcpy(e->pwd, tmp);
+			ft_strcat(e->pwd, "/");
+			ft_strcat(e->pwd, path);
 			free(tmp);
 			write(sock, success, ft_strlen(success));
 		}
