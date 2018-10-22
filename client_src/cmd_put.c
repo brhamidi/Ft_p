@@ -6,7 +6,7 @@
 /*   By: bhamidi <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/22 16:33:38 by bhamidi           #+#    #+#             */
-/*   Updated: 2018/10/22 18:38:19 by bhamidi          ###   ########.fr       */
+/*   Updated: 2018/10/22 19:11:06 by bhamidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,13 +27,15 @@ static void	send_file(int sock, int fd, int nloop)
 {
 	char	buf[1024];
 	int		r;
+	int		i;
 
-	if (nloop == 0)
-		return;
-	r = read(fd, buf, 1024);
-	write(sock, buf, r);
-	read(sock, buf, 2);
-	send_file(sock, fd, nloop - 1);
+	i = -1;
+	while (++i < nloop)
+	{
+		r = read(fd, buf, 1024);
+		write(sock, buf, r);
+		read(sock, buf, 2);
+	}
 }
 
 static void	transfer_file(int sock, int fd, int file_len)

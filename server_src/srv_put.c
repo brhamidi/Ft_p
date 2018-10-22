@@ -6,7 +6,7 @@
 /*   By: bhamidi <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/22 16:37:26 by bhamidi           #+#    #+#             */
-/*   Updated: 2018/10/22 17:29:31 by bhamidi          ###   ########.fr       */
+/*   Updated: 2018/10/22 19:11:50 by bhamidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,13 +16,15 @@ static void	get_file(int sock, int fd, int nloop)
 {
 	char	buf[1024];
 	int		r;
+	int		i;
 
-	if (nloop == 0)
-		return;
-	r = read(sock, buf, 1024);
-	write(fd, buf, r);
-	write(sock, "OK", 2);
-	get_file(sock, fd, nloop - 1);
+	i = -1;
+	while (++i < nloop)
+	{
+		r = read(sock, buf, 1024);
+		write(fd, buf, r);
+		write(sock, "OK", 2);
+	}
 }
 
 static void	transfer_file(int sock, int fd)
