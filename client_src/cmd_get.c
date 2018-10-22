@@ -6,23 +6,30 @@
 /*   By: bhamidi <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/22 13:25:15 by bhamidi           #+#    #+#             */
-/*   Updated: 2018/10/22 17:14:11 by bhamidi          ###   ########.fr       */
+/*   Updated: 2018/10/22 18:29:03 by bhamidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "client.h"
-
+#include <stdio.h>
 static void	get_file(int sock, int fd, int nloop)
 {
 	char	buf[1024];
 	int		r;
+	int		i;
 
-	if (nloop == 0)
-		return;
-	r = read(sock, buf, 1024);
-	write(fd, buf, r);
-	write(sock, "OK", 2);
-	get_file(sock, fd, nloop - 1);
+	i = 0;
+	while (i < nloop)
+	{
+		ft_putendl("1");
+		r = read(sock, buf, 1024);
+		ft_putendl("2");
+		write(fd, buf, r);
+		ft_putendl("3");
+		write(sock, "OK", 2);
+		ft_putendl("4");
+		i++;
+	}
 }
 
 static void	transfer_file(int sock, int fd)
