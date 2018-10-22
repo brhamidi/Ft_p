@@ -6,7 +6,7 @@
 /*   By: bhamidi <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/22 13:27:30 by bhamidi           #+#    #+#             */
-/*   Updated: 2018/10/22 18:29:02 by bhamidi          ###   ########.fr       */
+/*   Updated: 2018/10/22 18:38:23 by bhamidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,13 +32,9 @@ static void	send_file(int sock, int fd, int nloop)
 	i = 0;
 	while (i < nloop)
 	{
-		ft_putendl("1");
 		r = read(fd, buf, 1024);
-		ft_putendl("2");
 		write(sock, buf, r);
-		ft_putendl("3");
 		read(sock, buf, 2);
-		ft_putendl("4");
 		i++;
 	}
 }
