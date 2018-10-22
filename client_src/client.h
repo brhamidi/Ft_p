@@ -6,7 +6,7 @@
 /*   By: bhamidi <bhamidi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/21 19:25:24 by bhamidi           #+#    #+#             */
-/*   Updated: 2018/10/18 17:54:36 by bhamidi          ###   ########.fr       */
+/*   Updated: 2018/10/22 13:30:19 by bhamidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,12 +25,13 @@
 # include <errno.h>
 # include <dirent.h>
 
-void	array_free(char **tab);
+int		array_free(char **tab);
 size_t	array_len(char **tab);
 void	srv_pwd(char **args, int sock);
 void	client_pwd(char **args, int sock);
 void	srv_ls(char **args, int sock);
 void	srv_cd(char **args, int sock);
+void	srv_get(char **args, int sock);
 void	client_ls(char **args, int sock);
 
 #endif

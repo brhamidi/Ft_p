@@ -6,7 +6,7 @@
 /*   By: bhamidi <bhamidi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/21 19:22:53 by bhamidi           #+#    #+#             */
-/*   Updated: 2018/10/18 18:14:29 by bhamidi          ###   ########.fr       */
+/*   Updated: 2018/10/22 13:30:30 by bhamidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,8 @@ void		(*g_cmd_func[8])(char **, int) = {
 	client_pwd,
 	srv_ls,
 	client_ls,
-	srv_cd
+	srv_cd,
+	srv_get
 };
 
 void	handle_cmd(char *cmd, char **argvs, int sock)
@@ -94,7 +95,7 @@ int		repl(int sock)
 			if ((r = allowCmd(array)))
 				printf("ERROR: %s\n", g_error[r - 1]);
 			else if (!ft_strcmp("quit", array[0]))
-				return (0);
+				return (array_free(array));
 			else
 				handle_cmd(*array, array + 1, sock);
 			array_free(array);

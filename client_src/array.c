@@ -6,7 +6,7 @@
 /*   By: bhamidi <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/18 13:29:15 by bhamidi           #+#    #+#             */
-/*   Updated: 2018/10/18 13:29:47 by bhamidi          ###   ########.fr       */
+/*   Updated: 2018/10/22 13:30:07 by bhamidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ size_t	array_len(char **tab)
 	return (n);
 }
 
-void	array_free(char **tab)
+int		array_free(char **tab)
 {
 	size_t	n;
 
@@ -33,4 +33,5 @@ void	array_free(char **tab)
 		n++;
 	}
 	free(tab);
+	return (0);
 }

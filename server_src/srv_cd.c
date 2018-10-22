@@ -6,7 +6,7 @@
 /*   By: bhamidi <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/18 17:48:15 by bhamidi           #+#    #+#             */
-/*   Updated: 2018/10/19 17:19:44 by bhamidi          ###   ########.fr       */
+/*   Updated: 2018/10/22 13:24:05 by bhamidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,6 @@ void	srv_cd(int sock, t_data *e)
 	char	buf[1024];
 	int		r;
 
-	(void)e;
 	write(sock, "run", 3);
 	if ((r = read(sock, buf, 1023)) > 0)
 	{

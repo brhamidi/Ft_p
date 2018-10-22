@@ -6,7 +6,7 @@
 /*   By: bhamidi <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/18 13:35:48 by bhamidi           #+#    #+#             */
-/*   Updated: 2018/10/19 11:56:22 by bhamidi          ###   ########.fr       */
+/*   Updated: 2018/10/22 13:32:01 by bhamidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,12 +45,11 @@ void	client_ls(__unused char **args, __unused int sock)
 	(void)closedir(dirp);
 }
 
-void	srv_ls(char **args, int sock)
+void	srv_ls(__unused char **args, int sock)
 {
 	char		buf[255];
 	int			r;
 
-	(void)args;
 	write(sock, "ls", 2);
 	if ((r = read(sock, buf, 1023)) > 0)
 	{
