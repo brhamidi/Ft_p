@@ -6,7 +6,7 @@
 #    By: bhamidi <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/02/11 15:09:11 by bhamidi           #+#    #+#              #
-#    Updated: 2018/10/18 13:24:26 by bhamidi          ###   ########.fr        #
+#    Updated: 2018/10/22 20:06:53 by bhamidi          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,6 +25,8 @@ SRCS 	= ft_isalnum.c\
 		ft_atoi.c\
 		ft_itoa.c\
 		ft_splitwhitespaces.c\
+		ft_strsplit.c\
+		ft_get_nb_word.c\
 		ft_memalloc.c\
 		ft_memccpy.c	\
 		ft_memmove.c	\
