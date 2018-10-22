@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   srv_get.c                                          :+:      :+:    :+:   */
+/*   cmd_put.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bhamidi <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/10/22 13:27:30 by bhamidi           #+#    #+#             */
-/*   Updated: 2018/10/22 17:22:14 by bhamidi          ###   ########.fr       */
+/*   Created: 2018/10/22 16:33:38 by bhamidi           #+#    #+#             */
+/*   Updated: 2018/10/22 17:29:01 by bhamidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "server.h"
+#include "client.h"
 
 static int		get_file_len(const int fd)
 {
@@ -48,29 +48,30 @@ static void	transfer_file(int sock, int fd, int file_len)
 	send_file(sock, fd, nloop);
 }
 
-void	srv_get(int sock, __unused t_data *e)
+void	srv_put(char **args, int sock)
 {
-	char	buf[1024];
-	int		r;
-	int		fd;
-	int		file_len;
+	char		buf[1024];
+	int			r;
+	int			fd;
+	const char	*error = "ERROR: cannot put the file";
+	int			file_len;
 
-	write(sock, "name", 4);
-	r = read(sock, buf, 1023);
-	buf[r] = '\0';
-	if ((fd = open(buf, O_RDONLY)) == -1)
-		write(sock, "KO", 2);
+	if ((fd = open(*args, O_RDONLY)) == -1
+			|| ((file_len = get_file_len(fd)) == -1))
+		ft_putendl(error);
 	else
 	{
-		if ((file_len = get_file_len(fd)) == -1)
-			write(sock, "KO", 2);
+		write(sock, "put", 3);
+		r = read(sock, buf, 4);
+		write(sock, *args, ft_strlen(*args));
+		r = read(sock, buf, 2);
+		if (!ft_strncmp("KO", buf, 2))
+			ft_putendl(error);
 		else
 		{
-			write(sock, "OK", 2);
-			r = read(sock, buf, 2);
-			if (!ft_strncmp("OK", buf, 2))
-				transfer_file(sock, fd, file_len);
+			transfer_file(sock, fd, file_len);
+			ft_putendl("SUCCESS: file has been transfered to the server");
+			close(fd);
 		}
-		close(fd);
 	}
 }

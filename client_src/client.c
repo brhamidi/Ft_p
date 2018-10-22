@@ -6,7 +6,7 @@
 /*   By: bhamidi <bhamidi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/21 19:22:53 by bhamidi           #+#    #+#             */
-/*   Updated: 2018/10/22 13:30:30 by bhamidi          ###   ########.fr       */
+/*   Updated: 2018/10/22 16:33:29 by bhamidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,8 @@ void		(*g_cmd_func[8])(char **, int) = {
 	srv_ls,
 	client_ls,
 	srv_cd,
-	srv_get
+	srv_get,
+	srv_put
 };
 
 void	handle_cmd(char *cmd, char **argvs, int sock)

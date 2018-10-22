@@ -6,7 +6,7 @@
 /*   By: bhamidi <bhamidi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/21 19:25:24 by bhamidi           #+#    #+#             */
-/*   Updated: 2018/10/22 13:30:19 by bhamidi          ###   ########.fr       */
+/*   Updated: 2018/10/22 17:17:32 by bhamidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@
 # include "libft.h"
 # include <errno.h>
 # include <dirent.h>
+# include <sys/stat.h>
 
 int		array_free(char **tab);
 size_t	array_len(char **tab);
@@ -32,6 +33,7 @@ void	client_pwd(char **args, int sock);
 void	srv_ls(char **args, int sock);
 void	srv_cd(char **args, int sock);
 void	srv_get(char **args, int sock);
+void	srv_put(char **args, int sock);
 void	client_ls(char **args, int sock);
 
 #endif

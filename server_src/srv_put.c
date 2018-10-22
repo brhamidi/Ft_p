@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cmd_get.c                                          :+:      :+:    :+:   */
+/*   srv_put.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bhamidi <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/10/22 13:25:15 by bhamidi           #+#    #+#             */
-/*   Updated: 2018/10/22 17:14:11 by bhamidi          ###   ########.fr       */
+/*   Created: 2018/10/22 16:37:26 by bhamidi           #+#    #+#             */
+/*   Updated: 2018/10/22 17:29:31 by bhamidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "client.h"
+#include "server.h"
 
 static void	get_file(int sock, int fd, int nloop)
 {
@@ -36,32 +36,21 @@ static void	transfer_file(int sock, int fd)
 	get_file(sock, fd, ft_atoi(buf));
 }
 
-void	srv_get(char **args, int sock)
+void	srv_put(int sock, __unused t_data *e)
 {
-	char		buf[1024];
-	int			r;
-	int			fd;
-	const char	*error = "ERROR: cannot get the file";
+	char	buf[1024];
+	int		r;
+	int		fd;
 
-	write(sock, "get", 3);
-	r = read(sock, buf, 4);
-	write(sock, *args, ft_strlen(*args));
-	r = read(sock, buf, 2);
-	if (!ft_strncmp("KO", buf, 2))
-		ft_putendl(error);
+	write(sock, "name", 4);
+	r = read(sock, buf, 1023);
+	buf[r] = '\0';
+	if ((fd = open(buf, O_CREAT | O_WRONLY | O_TRUNC, 0644)) == -1)
+		write(sock, "KO", 2);
 	else
 	{
-		if ((fd = open(*args, O_CREAT | O_WRONLY | O_TRUNC, 0644)) == -1)
-		{
-			write(sock, "KO", 2);
-			ft_putendl(error);
-		}
-		else
-		{
-			write(sock, "OK", 3);
-			transfer_file(sock, fd);
-			ft_putendl("SUCCESS: file has been transfered from the server");
-			close(fd);
-		}
+		write(sock, "OK", 2);
+		transfer_file(sock, fd);
+		close(fd);
 	}
 }
