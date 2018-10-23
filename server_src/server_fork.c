@@ -6,7 +6,7 @@
 /*   By: bhamidi <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/18 12:21:49 by bhamidi           #+#    #+#             */
-/*   Updated: 2018/10/22 16:37:17 by bhamidi          ###   ########.fr       */
+/*   Updated: 2018/10/23 16:48:38 by bhamidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,10 +43,6 @@ int		repl(int sock, t_data *e)
 	{
 		buf[r] = '\0';
 		handle_cmd(buf, sock, e);
-		// log
-			printf("\nroot: %s\n", e->root);
-			printf("pwd: %s\n", e->pwd);
-			printf("depth: %d\n", e->depth);
 	}
 	close(sock);
 	return (0);

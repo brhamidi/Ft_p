@@ -6,7 +6,7 @@
 /*   By: bhamidi <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/18 17:48:15 by bhamidi           #+#    #+#             */
-/*   Updated: 2018/10/22 20:07:52 by bhamidi          ###   ########.fr       */
+/*   Updated: 2018/10/23 16:56:31 by bhamidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,35 +81,41 @@ int		array_free(char **tab)
 	free(tab);
 	return (0);
 }
-void	compute(char *str, const char **array)
-{
-	ft_strcat(str, "/");
-	if (array_len(array) >= 2)
-	{
-		if (ft_strcmp(array[1], ".."))
-		{
-			ft_strcat(str, array[0]);
-			ft_strcat(str, array[1]);
-		}
-		compute(str, array + 2);
-	}
-	else if (array_len(array) == 1)
-		ft_strcat(str, array[0]);
 
+char	*compute(const char **array, int index, char *buf, int skip)
+{
+	if (index < 0)
+		return (buf);
+	if (!ft_strcmp(array[index], ".."))
+		return compute(array, index - 1, buf, skip + 1);
+	if (!ft_strcmp(array[index], "."))
+		return compute(array, index - 1, buf, skip);
+	if (skip > 0)
+		return compute(array, index - skip, buf, 0);
+	else
+	{
+		compute(array, index - 1, buf, skip);
+		ft_strcat(buf, "/");
+		ft_strcat(buf, array[index]);
+	}
+	return (buf);
 }
 
-void	clean_path(char **path)
+void	clean_path(char **path, int depth)
 {
-	const char 	**array = (const char **)ft_strsplit(*path, '/');
+	const char	**array = (const char **)ft_strsplit(*path, '/');
 	char		*res;
 
-	if (array != NULL && array_len(array) > 1)
+	if (depth != 0)
 	{
 		res = ft_strnew(ft_strlen(*path) + 1);
-		compute(res, array);
-		free(*path);
-		*path = res;
+		res = compute(array, array_len(array) - 1, res, 0);
 	}
+	else
+		res = ft_strdup("/");
+	free(*path);
+	*path = res;
+	array_free((char **)array);
 }
 
 void	handle_relatif_path(int sock, t_data *e, char *path)
@@ -134,7 +140,7 @@ void	handle_relatif_path(int sock, t_data *e, char *path)
 			ft_strcpy(e->pwd, tmp);
 			ft_strcat(e->pwd, "/");
 			ft_strcat(e->pwd, path);
-//			clean_path(&e->pwd);
+			clean_path(&e->pwd, e->depth);
 			free(tmp);
 			write(sock, success, ft_strlen(success));
 		}
