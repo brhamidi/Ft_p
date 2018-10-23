@@ -6,22 +6,23 @@
 /*   By: bhamidi <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/18 12:21:49 by bhamidi           #+#    #+#             */
-/*   Updated: 2018/10/23 17:33:27 by bhamidi          ###   ########.fr       */
+/*   Updated: 2018/10/23 18:44:24 by bhamidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "server.h"
 
-const char	*g_cmd_tab[5] = {
-	"pwd", "ls", "cd", "get", "put"
+const char	*g_cmd_tab[6] = {
+	"pwd", "ls", "cd", "get", "put", "mkdir"
 };
 
-void		(*g_cmd_func[5])(int, t_data *) = {
+void		(*g_cmd_func[6])(int, t_data *) = {
 	srv_pwd,
 	srv_ls,
 	srv_cd,
 	srv_get,
-	srv_put
+	srv_put,
+	srv_mkdir
 };
 
 void	handle_cmd(char *cmd, int sock, t_data *e)
@@ -29,7 +30,7 @@ void	handle_cmd(char *cmd, int sock, t_data *e)
 	int		i;
 
 	i = -1;
-	while (++i < 5)
+	while (++i < 6)
 		if (!ft_strcmp(cmd, g_cmd_tab[i]))
 			g_cmd_func[i](sock, e);
 }

@@ -6,7 +6,7 @@
 /*   By: bhamidi <bhamidi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/21 19:22:53 by bhamidi           #+#    #+#             */
-/*   Updated: 2018/10/23 15:13:16 by bhamidi          ###   ########.fr       */
+/*   Updated: 2018/10/23 18:53:34 by bhamidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	usage(char *path)
 }
 
 const char	*g_cmd_tab[9] = {
-	"pwd", "lpwd", "ls", "lls", "cd", "get", "put", "quit"
+	"pwd", "lpwd", "ls", "lls", "cd", "get", "put", "mkdir", "quit"
 };
 
 int		cmdNotExist(char *str)
@@ -27,7 +27,7 @@ int		cmdNotExist(char *str)
 	int		i;
 
 	i = -1;
-	while (++i < 8)
+	while (++i < 9)
 		if (!ft_strcmp(g_cmd_tab[i], str))
 			return (0);
 	return (1);
@@ -45,7 +45,7 @@ int		allowCmd(char **array)
 		if (array_len(array) > 1)
 			return (2);
 	if (!ft_strcmp(*array, "get") || !ft_strcmp(*array, "put")
-			|| !ft_strcmp(*array, "cd"))
+			|| !ft_strcmp(*array, "cd") || !ft_strcmp(*array, "mkdir"))
 	{
 		if (array_len(array) > 2)
 			return (2);
@@ -61,14 +61,15 @@ const char	*g_error[3] = {
 	"argument not found"
 };
 
-void		(*g_cmd_func[8])(char **, int) = {
+void		(*g_cmd_func[9])(char **, int) = {
 	srv_pwd,
 	client_pwd,
 	srv_ls,
 	client_ls,
 	srv_cd,
 	srv_get,
-	srv_put
+	srv_put,
+	srv_mkdir
 };
 
 void	handle_cmd(char *cmd, char **argvs, int sock)
@@ -76,7 +77,7 @@ void	handle_cmd(char *cmd, char **argvs, int sock)
 	int		i;
 
 	i = -1;
-	while (++i < 7)
+	while (++i < 8)
 		if (!ft_strcmp(cmd, g_cmd_tab[i]))
 			g_cmd_func[i](argvs, sock);
 }
