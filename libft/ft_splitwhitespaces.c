@@ -6,7 +6,7 @@
 /*   By: bhamidi <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/18 13:26:10 by bhamidi           #+#    #+#             */
-/*   Updated: 2018/10/18 13:26:30 by bhamidi          ###   ########.fr       */
+/*   Updated: 2018/10/23 20:06:19 by bhamidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,9 +70,8 @@ char	**ft_splitwhitespaces(char *str)
 	{
 		while ((str[i] == '\t' || str[i] == ' ' || str[i] == '\n') && str[i])
 			i++;
-		if (str[i])
+		if (str[i] && !(k = 0))
 		{
-			k = 0;
 			if ((res[j] = ft_strnew(ft_ln_w(str, i))) == NULL)
 				return (NULL);
 			while (str[i] != '\t' && str[i] != ' ' && str[i] != '\n' && str[i])
