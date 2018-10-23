@@ -6,7 +6,7 @@
 /*   By: bhamidi <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/22 16:37:26 by bhamidi           #+#    #+#             */
-/*   Updated: 2018/10/23 14:05:23 by bhamidi          ###   ########.fr       */
+/*   Updated: 2018/10/23 14:23:05 by bhamidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static void	get_file(int sock, int fd, int nloop)
 	int		i;
 
 	i = -1;
-	while (++i < nloop - 1)
+	while (++i < nloop)
 	{
 		r = read(sock, buf, LEN_CHUNCK);
 		write(fd, buf, r);

@@ -6,7 +6,7 @@
 /*   By: bhamidi <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/22 16:33:38 by bhamidi           #+#    #+#             */
-/*   Updated: 2018/10/23 14:04:40 by bhamidi          ###   ########.fr       */
+/*   Updated: 2018/10/23 14:23:17 by bhamidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,18 +30,17 @@ static int		get_file_len(const int fd)
 	return (buf.st_size);
 }
 
-static void	send_file(int sock, __unused int fd, int nloop, void *addr)
+static void	send_file(int sock, int fd, int nloop)
 {
 	char	buf[LEN_CHUNCK];
-//	int		r;
+	int		r;
 	int		i;
 
 	i = -1;
-	while (++i < nloop - 1) // delete - 1 after test
+	while (++i < nloop)
 	{
-//		r = read(fd, buf, LEN_CHUNCK);
-		write(sock, addr, LEN_CHUNCK);
-		addr += LEN_CHUNCK;
+		r = read(fd, buf, LEN_CHUNCK);
+		write(sock, buf, r);
 		read(sock, buf, 2);
 	}
 }
@@ -52,13 +51,11 @@ static void	transfer_file(int sock, int fd, int file_len)
 		(file_len / LEN_CHUNCK) + (file_len % LEN_CHUNCK == 0 ? 0 : 1);
 	const char	*snloop = ft_itoa(nloop);
 	char		buf[LEN_CHUNCK];
-	void		*addr;
 
-	addr = mmap(0, file_len, PROT_WRITE, MAP_PRIVATE, fd, 0);
 	write(sock, snloop, ft_strlen(snloop));
 	free((void *)snloop);
 	read(sock, buf, 2);
-	send_file(sock, fd, nloop, addr);
+	send_file(sock, fd, nloop);
 }
 
 void	srv_put(char **args, int sock)
