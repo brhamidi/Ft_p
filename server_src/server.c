@@ -6,7 +6,7 @@
 /*   By: bhamidi <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/18 15:29:01 by bhamidi           #+#    #+#             */
-/*   Updated: 2018/10/18 12:22:23 by bhamidi          ###   ########.fr       */
+/*   Updated: 2018/10/23 17:28:49 by bhamidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,28 +26,16 @@ int		create_server(int port)
 
 	proto = getprotobyname("tcp");
 	if (!proto)
-	{
-		perror("getprotobyname() failed");
 		return (-1);
-	}
 	if ((sock = socket(PF_INET, SOCK_STREAM, proto->p_proto)) == -1)
-	{
-		perror("socket() failed");
 		return (-1);
-	}
 	sin.sin_family = AF_INET;
 	sin.sin_port = htons(port);
 	sin.sin_addr.s_addr = htonl(INADDR_ANY);
 	if (bind(sock, (const struct sockaddr*)&sin, sizeof(sin)) == -1)
-	{
-		printf("bind() failed\n");
 		return (-1);
-	}
 	if (listen(sock, 0x0A) == -1)
-	{
-		perror("listen() failed");
 		return (-1);
-	}
 	return (sock);
 }
 
@@ -59,16 +47,10 @@ int		handle_clients(int sock, char **env)
 	pid_t				pid;
 
 	if ((cs = accept(sock, (struct sockaddr*)&csin, &cslen)) == -1)
-	{
-		perror("accept() failed");
 		return (-1);
-	}
 	pid = fork();
 	if (pid == -1)
-	{
-		perror("fork() failed");
 		return (-1);
-	}
 	if (pid == 0)
 	{
 		if (init(cs, env) == -1)
@@ -76,8 +58,7 @@ int		handle_clients(int sock, char **env)
 		close(cs);
 		return (0);
 	}
-	else
-		return (handle_clients(sock, env));
+	return (handle_clients(sock, env));
 }
 
 int		main(int ac, char **av, char **env)

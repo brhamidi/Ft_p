@@ -6,7 +6,7 @@
 /*   By: bhamidi <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/18 12:21:49 by bhamidi           #+#    #+#             */
-/*   Updated: 2018/10/23 16:48:38 by bhamidi          ###   ########.fr       */
+/*   Updated: 2018/10/23 17:33:27 by bhamidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,21 +54,16 @@ int		init(int cs, char **env)
 	char	buf[255];
 	t_data	e;
 
+	r = -1;
 	if ((r = read(cs, buf, 255)) > 0)
 	{
 		buf[r] = '\0';
 		if (mkdir(buf, 0755) && errno != EEXIST)
-		{
-			perror("mkdir() failed");
 			return (-1);
-		}
 		if (chdir(buf))
-		{
-			perror("chdir() failed");
 			return (-1);
-		}
-		init_e(&e, env, buf);
-		r = repl(cs, &e);
+		if (init_e(&e, env, buf) == 0)
+			r = repl(cs, &e);
 		clean_e(&e);
 		return (r);
 	}

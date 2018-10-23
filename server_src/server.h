@@ -6,7 +6,7 @@
 /*   By: bhamidi <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/18 15:30:22 by bhamidi           #+#    #+#             */
-/*   Updated: 2018/10/23 13:28:57 by bhamidi          ###   ########.fr       */
+/*   Updated: 2018/10/23 17:34:02 by bhamidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,6 @@ void	srv_pwd(int sock, t_data *e);
 void	srv_get(int sock, t_data *e);
 void	srv_put(int sock, __unused t_data *e);
 void	clean_e(t_data *e);
-void	init_e(t_data *e, char **env, char *userDir);
+int		init_e(t_data *e, char **env, char *userDir);
 
 #endif
