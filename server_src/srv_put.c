@@ -6,7 +6,7 @@
 /*   By: bhamidi <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/22 16:37:26 by bhamidi           #+#    #+#             */
-/*   Updated: 2018/10/22 19:11:50 by bhamidi          ###   ########.fr       */
+/*   Updated: 2018/10/23 14:05:23 by bhamidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,14 @@
 
 static void	get_file(int sock, int fd, int nloop)
 {
-	char	buf[1024];
+	char	buf[LEN_CHUNCK];
 	int		r;
 	int		i;
 
 	i = -1;
-	while (++i < nloop)
+	while (++i < nloop - 1)
 	{
-		r = read(sock, buf, 1024);
+		r = read(sock, buf, LEN_CHUNCK);
 		write(fd, buf, r);
 		write(sock, "OK", 2);
 	}
@@ -53,6 +53,7 @@ void	srv_put(int sock, __unused t_data *e)
 	{
 		write(sock, "OK", 2);
 		transfer_file(sock, fd);
+		ft_putendl("transfert finish");
 		close(fd);
 	}
 }

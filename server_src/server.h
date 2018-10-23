@@ -6,7 +6,7 @@
 /*   By: bhamidi <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/18 15:30:22 by bhamidi           #+#    #+#             */
-/*   Updated: 2018/10/22 16:38:39 by bhamidi          ###   ########.fr       */
+/*   Updated: 2018/10/23 13:28:57 by bhamidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,8 @@
 # include <sys/stat.h>
 # include <errno.h>
 # include <dirent.h>
+
+# define LEN_CHUNCK		256
 
 typedef struct	s_data
 {

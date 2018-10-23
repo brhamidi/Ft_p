@@ -6,7 +6,7 @@
 /*   By: bhamidi <bhamidi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/21 19:25:24 by bhamidi           #+#    #+#             */
-/*   Updated: 2018/10/22 17:17:32 by bhamidi          ###   ########.fr       */
+/*   Updated: 2018/10/23 13:57:24 by bhamidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,9 @@
 # include <errno.h>
 # include <dirent.h>
 # include <sys/stat.h>
+ #include <sys/mman.h>
+
+# define LEN_CHUNCK		256
 
 int		array_free(char **tab);
 size_t	array_len(char **tab);
