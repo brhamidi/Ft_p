@@ -6,7 +6,7 @@
 /*   By: bhamidi <bhamidi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/21 19:22:53 by bhamidi           #+#    #+#             */
-/*   Updated: 2018/10/22 16:33:29 by bhamidi          ###   ########.fr       */
+/*   Updated: 2018/10/23 15:13:16 by bhamidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,29 +108,21 @@ int		repl(int sock)
 
 int		create_client(char *server, char *port)
 {
-	int			sock;
+	int					sock;
 	struct protoent		*proto;
 	struct sockaddr_in	sin;
+	const char			*srv = (!ft_strcmp(server, "localhost")) ? "127.0.0.1" : server;
 
 	proto = getprotobyname("tcp");
 	if (!proto)
-	{
-		perror("getprotobyname() failed");
 		return (-1);
-	}
 	if ((sock = socket(PF_INET, SOCK_STREAM, proto->p_proto)) == -1)
-	{
-		perror("socket() failed");
 		return (-1);
-	}
 	sin.sin_family = AF_INET;
 	sin.sin_port = htons(atoi(port));
-	sin.sin_addr.s_addr = inet_addr(server);
+	sin.sin_addr.s_addr = inet_addr(srv);
 	if ((connect(sock, (struct sockaddr*)&sin, sizeof(sin))) == -1)
-	{
-		perror("connect() failed");
 		return (-1);
-	}
 	return (sock);
 }
 
