@@ -6,13 +6,13 @@
 /*   By: bhamidi <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/22 13:27:30 by bhamidi           #+#    #+#             */
-/*   Updated: 2018/10/23 17:58:27 by bhamidi          ###   ########.fr       */
+/*   Updated: 2018/10/23 19:25:01 by bhamidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "server.h"
 
-static int		get_file_len(const int fd)
+static int	get_file_len(const int fd)
 {
 	struct stat		buf;
 
@@ -46,20 +46,21 @@ static void	transfer_file(int sock, int fd, int file_len)
 	char		buf[1024];
 
 	if (snloop == NULL)
-		return;
+		return ;
 	write(sock, snloop, ft_strlen(snloop));
 	free((void *)snloop);
 	read(sock, buf, 2);
 	send_file(sock, fd, nloop);
 }
 
-void	srv_get(int sock, __unused t_data *e)
+void		srv_get(int sock, t_data *e)
 {
 	char	buf[1024];
 	int		r;
 	int		fd;
 	int		file_len;
 
+	(void)e;
 	write(sock, "name", 4);
 	r = read(sock, buf, 1023);
 	buf[r] = '\0';

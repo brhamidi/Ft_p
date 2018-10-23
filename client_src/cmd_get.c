@@ -6,13 +6,13 @@
 /*   By: bhamidi <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/22 13:25:15 by bhamidi           #+#    #+#             */
-/*   Updated: 2018/10/22 18:46:30 by bhamidi          ###   ########.fr       */
+/*   Updated: 2018/10/23 19:10:34 by bhamidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "client.h"
 
-static void get_file(int sock, int fd, int nloop)
+static void	get_file(int sock, int fd, int nloop)
 {
 	char	buf[1024];
 	int		r;
@@ -38,25 +38,24 @@ static void	transfer_file(int sock, int fd)
 	get_file(sock, fd, ft_atoi(buf));
 }
 
-void	srv_get(char **args, int sock)
+void		srv_get(char **args, int sock)
 {
 	char		buf[1024];
 	int			r;
 	int			fd;
-	const char	*error = "ERROR: cannot get the file";
 
 	write(sock, "get", 3);
 	r = read(sock, buf, 4);
 	write(sock, *args, ft_strlen(*args));
 	r = read(sock, buf, 2);
 	if (!ft_strncmp("KO", buf, 2))
-		ft_putendl(error);
+		ft_putendl("ERROR: cannot get the file");
 	else
 	{
 		if ((fd = open(*args, O_CREAT | O_WRONLY | O_TRUNC, 0644)) == -1)
 		{
 			write(sock, "KO", 2);
-			ft_putendl(error);
+			ft_putendl("ERROR: cannot get the file");
 		}
 		else
 		{

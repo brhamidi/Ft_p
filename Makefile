@@ -6,7 +6,7 @@
 #    By: bhamidi <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/10/18 20:33:41 by bhamidi           #+#    #+#              #
-#    Updated: 2018/10/23 18:47:57 by bhamidi          ###   ########.fr        #
+#    Updated: 2018/10/23 19:48:24 by bhamidi          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,7 @@ CFLAGS	+= -O2
 
 SERVER			= server
 SERVER_PATH		= server_src/
-SERVER_OBJ		= server.o server_fork.o srv_ls.o srv_pwd.o environement.o srv_cd.o srv_get.o srv_put.o srv_mkdir.o
+SERVER_OBJ		= server.o server_fork.o srv_ls.o srv_pwd.o environement.o srv_cd.o srv_get.o srv_put.o srv_mkdir.o array.o
 SERVER_OBJS		= $(addprefix $(SERVER_PATH), $(SERVER_OBJ))
 SERVER_HEADER	= server.h
 

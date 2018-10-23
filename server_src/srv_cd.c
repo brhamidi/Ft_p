@@ -6,35 +6,11 @@
 /*   By: bhamidi <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/18 17:48:15 by bhamidi           #+#    #+#             */
-/*   Updated: 2018/10/23 18:55:27 by bhamidi          ###   ########.fr       */
+/*   Updated: 2018/10/23 19:50:34 by bhamidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "server.h"
-
-int		get_depth(const char *path, int curr_depth, int acc)
-{
-	char	*next;
-
-	if (path == NULL || ! *path)
-		return (acc + curr_depth < 0 ? -1 : acc + curr_depth);
-	if (*path == '/')
-		return get_depth(path + 1, curr_depth, acc);
-	next = ft_strchr(path, '/');
-	if (next == NULL)
-	{
-		if (!ft_strcmp(path, ".."))
-			return ((acc - 1 + curr_depth < 0) ? -1 : acc - 1 + curr_depth);
-		else if (!ft_strcmp(path, "."))
-			return (acc + curr_depth);
-		return (acc + 1 + curr_depth);
-	}
-	if (!ft_strncmp(path, "../", 3))
-		return (acc - 1 + curr_depth < 0 ? -1 : get_depth(next + 1, curr_depth, acc - 1));
-	else if (!ft_strncmp(path, "./", 2))
-		return (get_depth(next + 1, curr_depth, acc));
-	return (get_depth(next + 1, curr_depth, acc + 1));
-}
 
 void	handle_abolute_path(int sock, t_data *e, char *path)
 {
@@ -45,7 +21,7 @@ void	handle_abolute_path(int sock, t_data *e, char *path)
 	const char	*error_depth = "ERROR: path not allowed";
 
 	if (fullpath == NULL)
-		return;
+		return ;
 	if (path_depth == -1)
 		write(sock, error_depth, ft_strlen(error_depth));
 	else if (chdir(fullpath) == -1)
@@ -54,35 +30,11 @@ void	handle_abolute_path(int sock, t_data *e, char *path)
 	{
 		free(e->pwd);
 		if ((e->pwd = ft_strdup(path)) == NULL)
-			return;
+			return ;
 		e->depth = path_depth;
 		write(sock, success, ft_strlen(success));
 	}
 	free((void *)fullpath);
-}
-
-size_t	array_len(const char **tab)
-{
-	size_t	n;
-
-	n = 0;
-	while (tab[n])
-		n++;
-	return (n);
-}
-
-int		array_free(char **tab)
-{
-	size_t	n;
-
-	n = 0;
-	while (tab[n])
-	{
-		free(tab[n]);
-		n++;
-	}
-	free(tab);
-	return (0);
 }
 
 char	*compute(const char **array, int index, char *buf, int skip)
@@ -90,11 +42,11 @@ char	*compute(const char **array, int index, char *buf, int skip)
 	if (index < 0)
 		return (buf);
 	if (!ft_strcmp(array[index], ".."))
-		return compute(array, index - 1, buf, skip + 1);
+		return (compute(array, index - 1, buf, skip + 1));
 	if (!ft_strcmp(array[index], "."))
-		return compute(array, index - 1, buf, skip);
+		return (compute(array, index - 1, buf, skip));
 	if (skip > 0)
-		return compute(array, index - skip, buf, 0);
+		return (compute(array, index - skip, buf, 0));
 	else
 	{
 		compute(array, index - 1, buf, skip);
@@ -110,17 +62,17 @@ void	clean_path(char **path, int depth)
 	char		*res;
 
 	if (array == NULL)
-		return;
+		return ;
 	if (depth != 0)
 	{
 		if ((res = ft_strnew(ft_strlen(*path) + 1)) == NULL)
-			return;
-		res = compute(array, array_len(array) - 1, res, 0);
+			return ;
+		res = compute(array, array_len((char**)array) - 1, res, 0);
 	}
 	else
 	{
 		if ((res = ft_strdup("/")) == NULL)
-			return;
+			return ;
 	}
 	free(*path);
 	*path = res;
@@ -129,33 +81,28 @@ void	clean_path(char **path, int depth)
 
 void	handle_relatif_path(int sock, t_data *e, char *path)
 {
-	const int	path_depth = get_depth(path, e->depth, 0);
-	const char	*success = "SUCCESS: change current directory";
 	const char	*error = "ERROR: cannot change directory";
-	const char	*error_depth = "ERROR: path not allowed";
 	char		*tmp;
 
-	if (path_depth == -1)
-		write(sock, error_depth, ft_strlen(error_depth));
+	if (get_depth(path, e->depth, 0) == -1)
+		write(sock, "ERROR: path not allowed", 23);
 	else
 	{
 		if (chdir(path) == -1)
 			write(sock, error, ft_strlen(error));
 		else
 		{
-			e->depth = path_depth;
+			e->depth = get_depth(path, e->depth, 0);
 			tmp = e->pwd;
-			if ((e->pwd = ft_strnew(ft_strlen(e->pwd) + ft_strlen(path) + 1 + 2)) == NULL)
-			{
-				write(sock, "ERRROR: malloc failed", ft_strlen("ERRROR: malloc failed"));
-				return;
-			}
+			if ((e->pwd = ft_strnew(ft_strlen(e->pwd) +
+							ft_strlen(path) + 1 + 2)) == NULL)
+				return ;
 			ft_strcpy(e->pwd, tmp);
 			ft_strcat(e->pwd, "/");
 			ft_strcat(e->pwd, path);
 			clean_path(&e->pwd, e->depth);
 			free(tmp);
-			write(sock, success, ft_strlen(success));
+			write(sock, "SUCCESS: change current directory", 33);
 		}
 	}
 }

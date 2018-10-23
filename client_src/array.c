@@ -6,11 +6,25 @@
 /*   By: bhamidi <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/18 13:29:15 by bhamidi           #+#    #+#             */
-/*   Updated: 2018/10/22 13:30:07 by bhamidi          ###   ########.fr       */
+/*   Updated: 2018/10/23 19:55:09 by bhamidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "client.h"
+
+int		cmd_not_exist(char *str)
+{
+	int			i;
+	const char	*cmd_tab[9] = {
+		"pwd", "lpwd", "ls", "lls", "cd", "get", "put", "mkdir", "quit"
+	};
+
+	i = -1;
+	while (++i < 9)
+		if (!ft_strcmp(cmd_tab[i], str))
+			return (0);
+	return (1);
+}
 
 size_t	array_len(char **tab)
 {

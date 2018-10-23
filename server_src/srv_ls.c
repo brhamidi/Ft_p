@@ -6,17 +6,17 @@
 /*   By: bhamidi <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/18 12:28:36 by bhamidi           #+#    #+#             */
-/*   Updated: 2018/10/23 18:01:55 by bhamidi          ###   ########.fr       */
+/*   Updated: 2018/10/23 19:45:47 by bhamidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "server.h"
 
-char	*join(char **result, char *name)
+static char	*join(char **result, char *name)
 {
 	const int	len = ft_strlen(*result) + ft_strlen(name) + 1;
 	char		*res;
-	
+
 	res = ft_strnew(len + 1);
 	if (res == NULL)
 		return (NULL);
@@ -27,7 +27,7 @@ char	*join(char **result, char *name)
 	return (res);
 }
 
-void	srv_ls(int sock, t_data *e)
+void		srv_ls(int sock, t_data *e)
 {
 	DIR				*dirp;
 	struct dirent	*dp;
@@ -36,14 +36,14 @@ void	srv_ls(int sock, t_data *e)
 	(void)e;
 	dirp = opendir(".");
 	if ((result = ft_strdup("SUCCESS:")) == NULL)
-			return;
+		return ;
 	if (dirp == NULL)
 		write(sock, "ERROR: cannot open current server directory", 37);
 	else
 	{
 		while ((dp = readdir(dirp)) != NULL)
 			if ((result = join(&result, dp->d_name)) == NULL)
-				return;
+				return ;
 		write(sock, result, ft_strlen(result));
 	}
 	free(result);

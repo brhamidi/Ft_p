@@ -6,15 +6,15 @@
 /*   By: bhamidi <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/22 16:33:38 by bhamidi           #+#    #+#             */
-/*   Updated: 2018/10/23 18:10:19 by bhamidi          ###   ########.fr       */
+/*   Updated: 2018/10/23 19:23:44 by bhamidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "client.h"
 
-static int		get_file_len(const int fd)
+static int	get_file_len(const int fd)
 {
-	struct stat		buf;
+	struct stat	buf;
 
 	if (fstat(fd, &buf) == -1)
 	{
@@ -46,19 +46,20 @@ static void	send_file(int sock, int fd, int nloop)
 
 static void	transfer_file(int sock, int fd, int file_len)
 {
-	const int	nloop = (file_len / LEN_CHUNCK) + (file_len % LEN_CHUNCK == 0 ? 0 : 1);
+	const int	add_one = (file_len % LEN_CHUNCK == 0 ? 0 : 1);
+	const int	nloop = (file_len / LEN_CHUNCK) + add_one;
 	const char	*snloop = ft_itoa(nloop);
 	char		buf[LEN_CHUNCK];
 
-	if (snloop== NULL)
-		return;
+	if (snloop == NULL)
+		return ;
 	write(sock, snloop, ft_strlen(snloop));
 	free((void *)snloop);
 	read(sock, buf, 2);
 	send_file(sock, fd, nloop);
 }
 
-void	srv_put(char **args, int sock)
+void		srv_put(char **args, int sock)
 {
 	char		buf[1024];
 	int			r;

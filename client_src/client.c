@@ -6,38 +6,17 @@
 /*   By: bhamidi <bhamidi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/21 19:22:53 by bhamidi           #+#    #+#             */
-/*   Updated: 2018/10/23 18:53:34 by bhamidi          ###   ########.fr       */
+/*   Updated: 2018/10/23 19:54:54 by bhamidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "client.h"
 
-void	usage(char *path)
-{
-	printf("Usage: %s <server> <port> [ directory ]\n", path);
-	exit(EXIT_FAILURE);
-}
-
-const char	*g_cmd_tab[9] = {
-	"pwd", "lpwd", "ls", "lls", "cd", "get", "put", "mkdir", "quit"
-};
-
-int		cmdNotExist(char *str)
-{
-	int		i;
-
-	i = -1;
-	while (++i < 9)
-		if (!ft_strcmp(g_cmd_tab[i], str))
-			return (0);
-	return (1);
-}
-
-int		allowCmd(char **array)
+int		allow_cmd(char **array)
 {
 	if (!array || !*array)
 		return (-1);
-	if (cmdNotExist(*array))
+	if (cmd_not_exist(*array))
 		return (1);
 	if (!ft_strcmp(*array, "pwd") || !ft_strcmp(*array, "quit") ||
 			!ft_strcmp(*array, "lpwd") || !ft_strcmp(*array, "ls")
@@ -74,11 +53,14 @@ void		(*g_cmd_func[9])(char **, int) = {
 
 void	handle_cmd(char *cmd, char **argvs, int sock)
 {
-	int		i;
+	int			i;
+	const char	*cmd_tab[9] = {
+		"pwd", "lpwd", "ls", "lls", "cd", "get", "put", "mkdir", "quit"
+	};
 
 	i = -1;
 	while (++i < 8)
-		if (!ft_strcmp(cmd, g_cmd_tab[i]))
+		if (!ft_strcmp(cmd, cmd_tab[i]))
 			g_cmd_func[i](argvs, sock);
 }
 
@@ -94,7 +76,7 @@ int		repl(int sock)
 		buf[r] = '\0';
 		if ((array = ft_splitwhitespaces(buf)) != NULL)
 		{
-			if ((r = allowCmd(array)))
+			if ((r = allow_cmd(array)))
 				printf("ERROR: %s\n", g_error[r - 1]);
 			else if (!ft_strcmp("quit", array[0]))
 				return (array_free(array));
@@ -112,8 +94,9 @@ int		create_client(char *server, char *port)
 	int					sock;
 	struct protoent		*proto;
 	struct sockaddr_in	sin;
-	const char			*srv = (!ft_strcmp(server, "localhost")) ? "127.0.0.1" : server;
+	char				*srv;
 
+	srv = (!ft_strcmp(server, "localhost")) ? "127.0.0.1" : server;
 	proto = getprotobyname("tcp");
 	if (!proto)
 		return (-1);
@@ -133,7 +116,10 @@ int		main(int ac, char **av)
 	char	*dir;
 
 	if (ac < 3 || ac > 4)
-		usage(av[0]);
+	{
+		printf("Usage: %s <server> <port> [ directory ]\n", av[0]);
+		exit(EXIT_FAILURE);
+	}
 	if ((sock = create_client(av[1], av[2])) == -1)
 	{
 		printf("create_client() failed\n");

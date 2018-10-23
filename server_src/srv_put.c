@@ -6,7 +6,7 @@
 /*   By: bhamidi <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/22 16:37:26 by bhamidi           #+#    #+#             */
-/*   Updated: 2018/10/23 18:16:35 by bhamidi          ###   ########.fr       */
+/*   Updated: 2018/10/23 19:45:18 by bhamidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,12 +38,13 @@ static void	transfer_file(int sock, int fd)
 	get_file(sock, fd, ft_atoi(buf));
 }
 
-void	srv_put(int sock, __unused t_data *e)
+void		srv_put(int sock, t_data *e)
 {
 	char	buf[1024];
 	int		r;
 	int		fd;
 
+	(void)e;
 	write(sock, "name", 4);
 	r = read(sock, buf, 1023);
 	buf[r] = '\0';

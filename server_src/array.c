@@ -1,26 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   srv_pwd.c                                          :+:      :+:    :+:   */
+/*   array.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bhamidi <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/10/18 12:30:59 by bhamidi           #+#    #+#             */
-/*   Updated: 2018/10/23 19:44:47 by bhamidi          ###   ########.fr       */
+/*   Created: 2018/10/18 13:29:15 by bhamidi           #+#    #+#             */
+/*   Updated: 2018/10/23 19:49:03 by bhamidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "server.h"
 
-void	srv_pwd(int sock, t_data *e)
+size_t	array_len(char **tab)
 {
-	const char *str = ft_strjoin("SUCESS: ", e->pwd);
+	size_t	n;
 
-	if (str == NULL)
+	n = 0;
+	while (tab[n])
+		n++;
+	return (n);
+}
+
+int		array_free(char **tab)
+{
+	size_t	n;
+
+	n = 0;
+	while (tab[n])
 	{
-		write(sock, "ERROR: malloc failed", ft_strlen("ERROR: malloc failed"));
-		return ;
+		free(tab[n]);
+		n++;
 	}
-	write(sock, str, ft_strlen(str));
-	free((void *)str);
+	free(tab);
+	return (0);
 }

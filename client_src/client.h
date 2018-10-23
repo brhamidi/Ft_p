@@ -6,7 +6,7 @@
 /*   By: bhamidi <bhamidi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/21 19:25:24 by bhamidi           #+#    #+#             */
-/*   Updated: 2018/10/23 18:47:47 by bhamidi          ###   ########.fr       */
+/*   Updated: 2018/10/23 19:55:18 by bhamidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,5 +39,6 @@ void	srv_get(char **args, int sock);
 void	srv_put(char **args, int sock);
 void	srv_mkdir(char **args, int sock);
 void	client_ls(char **args, int sock);
+int		cmd_not_exist(char *str);
 
 #endif
