@@ -6,7 +6,7 @@
 /*   By: bhamidi <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/18 15:29:01 by bhamidi           #+#    #+#             */
-/*   Updated: 2018/10/23 17:47:02 by bhamidi          ###   ########.fr       */
+/*   Updated: 2018/10/23 18:22:09 by bhamidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,9 +54,9 @@ int		handle_clients(int sock, char **env)
 	if (pid == 0)
 	{
 		if (init(cs, env) == -1)
-			return (-1);
+			exit(EXIT_FAILURE);
 		close(cs);
-		return (0);
+		exit(EXIT_SUCCESS);
 	}
 	return (handle_clients(sock, env));
 }
