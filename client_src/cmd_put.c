@@ -6,7 +6,7 @@
 /*   By: bhamidi <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/22 16:33:38 by bhamidi           #+#    #+#             */
-/*   Updated: 2018/10/23 14:23:17 by bhamidi          ###   ########.fr       */
+/*   Updated: 2018/10/23 18:10:19 by bhamidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,6 @@ static int		get_file_len(const int fd)
 		close(fd);
 		return (-1);
 	}
-	ft_putnbr(buf.st_size);ft_putchar('\n');
 	return (buf.st_size);
 }
 
@@ -47,11 +46,12 @@ static void	send_file(int sock, int fd, int nloop)
 
 static void	transfer_file(int sock, int fd, int file_len)
 {
-	const int	nloop =
-		(file_len / LEN_CHUNCK) + (file_len % LEN_CHUNCK == 0 ? 0 : 1);
+	const int	nloop = (file_len / LEN_CHUNCK) + (file_len % LEN_CHUNCK == 0 ? 0 : 1);
 	const char	*snloop = ft_itoa(nloop);
 	char		buf[LEN_CHUNCK];
 
+	if (snloop== NULL)
+		return;
 	write(sock, snloop, ft_strlen(snloop));
 	free((void *)snloop);
 	read(sock, buf, 2);

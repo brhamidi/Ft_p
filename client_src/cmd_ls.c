@@ -6,7 +6,7 @@
 /*   By: bhamidi <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/18 13:35:48 by bhamidi           #+#    #+#             */
-/*   Updated: 2018/10/22 13:32:01 by bhamidi          ###   ########.fr       */
+/*   Updated: 2018/10/23 18:08:56 by bhamidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@ char	*join(char **result, char *name)
 	
 	res = ft_strnew(len + 1);
 	ft_strcpy(res, *result);
+	if (res == NULL)
+		return (NULL);
 	ft_strcat(res, " ");
 	ft_strcat(res, name);
 	free(*result);
@@ -37,9 +39,11 @@ void	client_ls(__unused char **args, __unused int sock)
 		ft_putendl("ERROR: cannot open current directory");
 		return;
 	}
-	result = ft_strdup("SUCCESS:");
+	if ( (result = ft_strdup("SUCCESS:")) == NULL)
+		return;
 	while ((dp = readdir(dirp)) != NULL)
-		result = join(&result, dp->d_name);
+		if ( (result = join(&result, dp->d_name)) == NULL)
+			return;
 	ft_putendl(result);
 	free(result);
 	(void)closedir(dirp);

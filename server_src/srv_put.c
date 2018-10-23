@@ -6,7 +6,7 @@
 /*   By: bhamidi <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/22 16:37:26 by bhamidi           #+#    #+#             */
-/*   Updated: 2018/10/23 14:23:05 by bhamidi          ###   ########.fr       */
+/*   Updated: 2018/10/23 18:16:35 by bhamidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,6 @@ void	srv_put(int sock, __unused t_data *e)
 	{
 		write(sock, "OK", 2);
 		transfer_file(sock, fd);
-		ft_putendl("transfert finish");
 		close(fd);
 	}
 }

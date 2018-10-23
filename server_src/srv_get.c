@@ -6,7 +6,7 @@
 /*   By: bhamidi <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/22 13:27:30 by bhamidi           #+#    #+#             */
-/*   Updated: 2018/10/22 18:38:23 by bhamidi          ###   ########.fr       */
+/*   Updated: 2018/10/23 17:58:27 by bhamidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,8 @@ static void	transfer_file(int sock, int fd, int file_len)
 	const char	*snloop = ft_itoa(nloop);
 	char		buf[1024];
 
+	if (snloop == NULL)
+		return;
 	write(sock, snloop, ft_strlen(snloop));
 	free((void *)snloop);
 	read(sock, buf, 2);

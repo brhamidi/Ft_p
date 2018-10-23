@@ -6,7 +6,7 @@
 /*   By: bhamidi <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/18 17:48:15 by bhamidi           #+#    #+#             */
-/*   Updated: 2018/10/23 16:56:31 by bhamidi          ###   ########.fr       */
+/*   Updated: 2018/10/23 17:57:25 by bhamidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,8 @@ void	handle_abolute_path(int sock, t_data *e, char *path)
 	const char	*error = "ERROR: cannot change directory";
 	const char	*error_depth = "ERROR: path not allowed";
 
+	if (fullpath == NULL)
+		return;
 	if (path_depth == -1)
 		write(sock, error_depth, ft_strlen(error_depth));
 	else if (chdir(fullpath) == -1)
@@ -51,7 +53,8 @@ void	handle_abolute_path(int sock, t_data *e, char *path)
 	else
 	{
 		free(e->pwd);
-		e->pwd = ft_strdup(path);
+		if ((e->pwd = ft_strdup(path)) == NULL)
+			return;
 		e->depth = path_depth;
 		write(sock, success, ft_strlen(success));
 	}
@@ -106,13 +109,19 @@ void	clean_path(char **path, int depth)
 	const char	**array = (const char **)ft_strsplit(*path, '/');
 	char		*res;
 
+	if (array == NULL)
+		return;
 	if (depth != 0)
 	{
-		res = ft_strnew(ft_strlen(*path) + 1);
+		if ((res = ft_strnew(ft_strlen(*path) + 1)) == NULL)
+			return;
 		res = compute(array, array_len(array) - 1, res, 0);
 	}
 	else
-		res = ft_strdup("/");
+	{
+		if ((res = ft_strdup("/")) == NULL)
+			return;
+	}
 	free(*path);
 	*path = res;
 	array_free((char **)array);
@@ -136,7 +145,11 @@ void	handle_relatif_path(int sock, t_data *e, char *path)
 		{
 			e->depth = path_depth;
 			tmp = e->pwd;
-			e->pwd = ft_strnew(ft_strlen(e->pwd) + ft_strlen(path) + 1 + 2);
+			if ((e->pwd = ft_strnew(ft_strlen(e->pwd) + ft_strlen(path) + 1 + 2)) == NULL)
+			{
+				write(sock, "ERRROR: malloc failed", ft_strlen("ERRROR: malloc failed"));
+				return;
+			}
 			ft_strcpy(e->pwd, tmp);
 			ft_strcat(e->pwd, "/");
 			ft_strcat(e->pwd, path);
