@@ -6,7 +6,7 @@
 /*   By: bhamidi <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/18 15:30:22 by bhamidi           #+#    #+#             */
-/*   Updated: 2018/10/23 20:08:23 by bhamidi          ###   ########.fr       */
+/*   Updated: 2018/10/24 13:29:11 by bhamidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ void			srv_pwd(int sock, t_data *e);
 void			srv_get(int sock, t_data *e);
 void			srv_put(int sock, t_data *e);
 void			srv_mkdir(int sock, t_data *e);
+void			srv_rmdir(int sock, t_data *e);
 void			clean_e(t_data *e);
 int				init_e(t_data *e, char **env, char *user_dir);
 int				get_depth(const char *path, int curr_depth, int acc);

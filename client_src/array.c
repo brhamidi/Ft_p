@@ -6,7 +6,7 @@
 /*   By: bhamidi <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/18 13:29:15 by bhamidi           #+#    #+#             */
-/*   Updated: 2018/10/23 19:55:09 by bhamidi          ###   ########.fr       */
+/*   Updated: 2018/10/24 13:25:37 by bhamidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,8 @@
 int		cmd_not_exist(char *str)
 {
 	int			i;
-	const char	*cmd_tab[9] = {
-		"pwd", "lpwd", "ls", "lls", "cd", "get", "put", "mkdir", "quit"
+	const char	*cmd_tab[10] = {
+		"pwd", "lpwd", "ls", "lls", "cd", "get", "put", "mkdir", "rmdir", "quit"
 	};
 
 	i = -1;
