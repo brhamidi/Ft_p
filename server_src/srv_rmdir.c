@@ -6,7 +6,7 @@
 /*   By: bhamidi <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/24 13:29:13 by bhamidi           #+#    #+#             */
-/*   Updated: 2018/10/24 13:29:50 by bhamidi          ###   ########.fr       */
+/*   Updated: 2018/10/24 14:50:30 by bhamidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ static void	handle_abolute_path(int sock, t_data *e, char *path)
 		return ;
 	if (path_depth == -1)
 		write(sock, error_depth, ft_strlen(error_depth));
-	else if (mkdir(fullpath, 0755) == -1)
+	else if (rmdir(fullpath) == -1)
 		write(sock, error, ft_strlen(error));
 	else
 		write(sock, success, ft_strlen(success));
