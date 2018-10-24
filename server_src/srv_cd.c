@@ -6,7 +6,7 @@
 /*   By: bhamidi <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/18 17:48:15 by bhamidi           #+#    #+#             */
-/*   Updated: 2018/10/23 19:50:34 by bhamidi          ###   ########.fr       */
+/*   Updated: 2018/10/24 13:16:19 by bhamidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ char	*compute(const char **array, int index, char *buf, int skip)
 	if (!ft_strcmp(array[index], "."))
 		return (compute(array, index - 1, buf, skip));
 	if (skip > 0)
-		return (compute(array, index - skip, buf, 0));
+		return (compute(array, index - 1, buf, skip - 1));
 	else
 	{
 		compute(array, index - 1, buf, skip);
